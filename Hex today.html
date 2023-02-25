@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hex news</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div id="date-window"></div>
+    
+    <script>
+      // Get today's date
+      const today = new Date();
+      
+      // Format the date as "day, month date"
+      const options = { weekday: 'long', month: 'long', day: 'numeric' };
+      const dateText = today.toLocaleDateString('en-US', options);
+      
+      // Create a small window to display the date
+      const dateWindow = document.getElementById('date-window');
+      dateWindow.innerHTML = `Today is ${dateText}`;
+    </script>
+  </body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="chatbot-message">
+      <p>Everything you need to know about HEX!</p>
+    </div>
+  </body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+      <style>
+      #comment-section {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        width: 300px;
+        height: 200px;
+        background-color: white;
+        border: 1px solid black;
+        overflow: auto;
+        display: none;
+      }
+      #comment-section form {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+      }
+      #comment-section form input[type="text"], #comment-section form textarea {
+        margin-bottom: 10px;
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid black;
+      }
+      #comment-section form input[type="submit"] {
+        padding: 5px 10px;
+        background-color: black;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      #comment-button {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        padding: 10px;
+        background-color: black;
+        color: white;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+  
+    
+    <div id="comment-section">
+      <h2>Leave a comment about page (What to add...)</h2>
+      <form>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="comment">Comment:</label>
+        <textarea id="comment" name="comment" rows="5" required></textarea>
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+    
+    <div id="comment-button">Leave a comment</div>
+    
+    <script>
+      const commentButton = document.getElementById("comment-button");
+      const commentSection = document.getElementById("comment-section");
+      
+      commentButton.addEventListener("click", () => {
+        commentSection.style.display = "block";
+      });
+      
+      commentSection.addEventListener("submit", (event) => {
+        event.preventDefault();
+        
+        const nameInput = document.getElementById("name");
+        const commentInput = document.getElementById("comment");
+        
+        const name = nameInput.value;
+        const comment = commentInput.value;
+        
+        const commentList = document.createElement("ul");
+        const commentItem = document.createElement("li");
+        commentItem.textContent = `${name}: ${comment}`;
+        commentList.appendChild(commentItem);
+        
+        commentSection.insertBefore(commentList, commentSection.firstChild);
+        
+        nameInput.value = "";
+        commentInput.value = "";
+      });
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Crypto Search Bar</title>
+  </head>
+  <body>
+    <h1>Crypto Search Bar</h1>
+    
+    <form>
+      <label for="crypto-search">Search for a cryptocurrency:</label>
+      <input type="text" id="crypto-search" name="crypto-search">
+      <button type="button" onclick="searchCryptos()">Search</button>
+    </form>
+    
+    <ul id="crypto-list"></ul>
+    
+    <script>
+      function searchCryptos() {
+        const searchTerm = document.getElementById("crypto-search").value;
+        const url = `https://api.coingecko.com/api/v3/coins/list?include_platform=false`;
+        
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            const cryptoList = document.getElementById("crypto-list");
+            cryptoList.innerHTML = "";
+            for (let i = 0; i < data.length; i++) {
+              const crypto = data[i];
+              if (crypto.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+                const cryptoItem = document.createElement("li");
+                const cryptoLink = document.createElement("a");
+                cryptoLink.href = `https://www.coingecko.com/en/coins/${crypto.id}`;
+                cryptoLink.target = "_blank";
+                cryptoLink.innerText = crypto.name;
+                cryptoItem.appendChild(cryptoLink);
+                cryptoList.appendChild(cryptoItem);
+              }
+            }
+          });
+      }
+    </script>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Website</title>
+	<style>
+		.character {
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			width: 100px;
+			height: 150px;
+			background-color: #fff;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+			border-radius: 50% 50% 0 0;
+			overflow: hidden;
+		}
+		.character .head {
+			position: relative;
+			width: 60px;
+			height: 60px;
+			margin: 20px auto 0;
+			border-radius: 50%;
+			background-color: #FFD3E3;
+			box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+		}
+		.character .eyes {
+			position: absolute;
+			top: 30%;
+			left: 15%;
+			width: 12px;
+			height: 12px;
+			background-color: #000;
+			border-radius: 50%;
+			transform: rotate(15deg);
+		}
+		.character .eyes:before, .character .eyes:after {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 5px;
+			height: 5px;
+			background-color: #fff;
+			border-radius: 50%;
+			transform: translate(-50%, -50%);
+		}
+		.character .eyes:before {
+			top: 40%;
+			left: 25%;
+		}
+		.character .eyes:after {
+			top: 60%;
+			left: 75%;
+		}
+		.character .mouth {
+			position: absolute;
+			top: 70%;
+			left: 50%;
+			width: 25px;
+			height: 10px;
+			background-color: #FFA3B1;
+			border-radius: 50% 50% 0 0;
+			transform: translateX(-50%);
+		}
+		.character .mouth:before, .character .mouth:after {
+			content: "";
+			position: absolute;
+			bottom: 0;
+			width: 5px;
+			height: 5px;
+			background-color: #fff;
+			border-radius: 50%;
+			transform: translate(-50%, -50%);
+		}
+		.character .mouth:before {
+			left: 30%;
+		}
+		.character .mouth:after {
+			left: 70%;
+		}
+	</style>
+</head>
+<body>
+	<div class="character">
+		<div class="head">
+			<div class="eyes"></div>
+			<div class="mouth"></div>
+		</div>
+	</div>
+	<!-- Rest of your website content goes here -->
+</body>
+</html>
+
+Click on your cryptocurrencie to get a detailed information.
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PulseChain Information</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <h1>PulseChain</h1>
+    <p>PulseChain is a blockchain project that aims to provide a faster and cheaper alternative to Ethereum. It is being developed by Richard Heart, who is also the founder of the HEX cryptocurrency.</p>
+    <h2>Key Features</h2>
+    <ul>
+      <li>Uses the same smart contract language (Solidity) as Ethereum</li>
+      <li>Uses the same Ethereum Virtual Machine (EVM) to execute smart contracts</li>
+      <li>Uses a Proof-of-Stake (PoS) consensus mechanism, which is more energy-efficient than Ethereum's Proof-of-Work (PoW) mechanism</li>
+      <li>Intends to support ERC-20 tokens and other Ethereum-based assets</li>
+      <li>Will airdrop PULSE tokens to holders of selected ERC-20 tokens on the Ethereum network</li>
+    </ul>
+    <h2>Current Status</h2>
+    <p>PulseChain is currently in the development phase. The project has not yet launched, but Richard Heart has provided regular updates on its progress via his Twitter account and other social media channels.</p>
+    <h2>Conclusion</h2>
+    <p>PulseChain aims to address some of the scalability and cost issues faced by the Ethereum network (high fees), while still providing support for Ethereum-based assets. Its PoS consensus mechanism and use of the EVM make it a potentially attractive alternative to Ethereum for developers and users alike. The problem with PulseChain is that the amount of HEX will increase. So, if there is much more supply than demand HEX will start losing value. Why? Let's take Luna coin for example, which has an excessive amount, and few people have the desire to buy it. Because people bought Luna coin in the beginning so for $1 they got large amounts of Luna~1M. "If you have HEX that is currently staked, those stakes will be duplicated over to the PulseChain. If you have liquid HEX on Ethereum you will get liquid HEX on PulseChain". So, with the release of the Pulsechain network, there will be two HEXs. The first is e-HEX, and the second is p-HEX. One is on the BlockChain network and the other is on the PulseChain.</p>
+    <h2>What can happen</h2>
+    <p>Richard Hearth could post something bad about e-Hex so most people will start switching to the PulseChain network. Why? Because that network would bring him much more money. He could also lower the price of e-Hex what we see today so that people think e-Hex has started to decay.</p>
+  </body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Forum Button Example</title>
+	<style>
+		#forum {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<button onclick="showForum()">Open Forum</button>
+
+	<div id="forum">
+		<form>
+			<label for="name">Name:</label>
+			<input type="text" id="name" name="name"><br><br>
+
+			<label for="message">Message:</label>
+			<textarea id="message" name="message"></textarea><br><br>
+
+			<button type="submit">Post</button>
+			<button type="button" onclick="hideForum()">Close Forum</button>
+		</form>
+	</div>
+
+	<script>
+		function showForum() {
+			document.getElementById("forum").style.display = "block";
+		}
+
+		function hideForum() {
+			document.getElementById("forum").style.display = "none";
+		}
+	</script>
+</body>
+</html>
+
+<p style="color: red;">⬆Here you can chat with other people and share your thoughts.</p>
+
+<p style="color: rgb(43, 0, 255);">⬇Here is a link (tradingview) of techical analyse 1D HEX chart.</p>
+
+<a href="">https://www.tradingview.com/chart/HEXUSDC/McNzpzI2-HEXUSD-chart/</a>
+
+	<footer>
+		<p>&copy; 2023 Crypto Website. All rights reserved.</p>
+	</footer>
+</body>
+</html>
